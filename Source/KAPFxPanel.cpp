@@ -48,7 +48,7 @@ void kKAPFxPAnel::paint(juce::Graphics & g)
 	{
 	case(kKAPFxPAnelStyle_Delay):
 	{
-	 // g.drawFittedText("DELAY ff", 0, 0, getWidth(), getHeight() *0.45, juce::Justification::centred, 1);To be removed
+	 // g.drawFittedText("DELAY", 0, 0, getWidth(), getHeight() *0.45, juce::Justification::centred, 1);To be removed
 
 	  label = "DELAY";
 
