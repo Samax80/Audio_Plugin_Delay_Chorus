@@ -29,9 +29,6 @@ public:
 
 
 private:
-	//sample of unioque pointer declaration
-	// std::unique_ptr<KAPMainPanel> mMainPanel;
-
 	
 	std::unique_ptr < KAPTopPanel> mTopPanel;
 	std::unique_ptr< KAPGainPanel> mInputGainPanel;

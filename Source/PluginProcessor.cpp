@@ -27,14 +27,9 @@ Samax_pluginAudioProcessor::Samax_pluginAudioProcessor()
         createParameterLayout())
 #endif
 {
-
     initializeDSP();
 
-
-
-
     mPresetManager = std::make_unique<KAPPresetManager>(this);
-
 }
 
 Samax_pluginAudioProcessor::~Samax_pluginAudioProcessor()
@@ -149,8 +144,8 @@ bool Samax_pluginAudioProcessor::isBusesLayoutSupported (const BusesLayout& layo
 #endif
 
 void Samax_pluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
-{
-    juce::ScopedNoDenormals noDenormals;
+{ 
+
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
 
@@ -188,10 +183,7 @@ void Samax_pluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
 
         mLfo[channel]->process(rate,
             ModulationDepth,
-            buffer.getNumSamples());
-                 
-
-
+            buffer.getNumSamples());               
 
         float type_value = *parameters.getRawParameterValue(KAPParameterID[kParameter_DelayType]);
 
@@ -200,7 +192,6 @@ void Samax_pluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
             type_value = 0;
         }
 
-
         mDelay[channel]->process(channelData,
             *parameters.getRawParameterValue(KAPParameterID[kParameter_DelayTime]),
             *parameters.getRawParameterValue(KAPParameterID[kParameter_DelayFeedback]),
@@ -208,14 +199,16 @@ void Samax_pluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
             type_value,
             mLfo[channel]->getBuffer(),
             channelData,
-            buffer.getNumSamples());       
-
+            buffer.getNumSamples());    
 
         mOutputGain[channel]->process(channelData,
             *parameters.getRawParameterValue(KAPParameterID[kParameter_OutputGain]),
             channelData,
             buffer.getNumSamples());
 
+        // vu meter implementation
+        rmsLevelLeft = juce::Decibels::gainToDecibels(buffer.getRMSLevel(0, 0, buffer.getNumSamples()));
+        rmsLevelRight = juce::Decibels::gainToDecibels(buffer.getRMSLevel(1, 0, buffer.getNumSamples()));
         // ..do something to the data...
     }
 }
@@ -250,22 +243,9 @@ void Samax_pluginAudioProcessor::getStateInformation (juce::MemoryBlock& destDat
 
 void Samax_pluginAudioProcessor::setStateInformation(const void* data, int sizeInBytes)
 {
-        // You should use this method to restore your parameters from this memory block,
-    // whose contents will have been created by the getStateInformation() call.
+    // You should use this method to restore your parameters from this memory block,
+   // whose contents will have been created by the getStateInformation() call.
 
-    //std::unique_ptr<juce::XmlElement> xmlState;
-    //xmlState.reset(getXmlFromBinary(data, sizeInBytes));//NOT WORKING
-	//if (xmlState != nullptr)
-	//{
-		//forEachXmlChildElement(*xmlState, subchild)
-		//{
-		//	mPresetManager->LoadPresetForXml(subchild);
-		//}
-
-	//}
-
-
-    ///
     std::unique_ptr<juce::XmlElement> xmlState(getXmlFromBinary(data, sizeInBytes));
 
     if (xmlState.get() != nullptr)
@@ -276,6 +256,8 @@ void Samax_pluginAudioProcessor::setStateInformation(const void* data, int sizeI
         }
     }
 }
+
+
 
 float Samax_pluginAudioProcessor::getOutputGainMeterLevel(int inChannel)
 {
@@ -291,24 +273,31 @@ float Samax_pluginAudioProcessor::getInputGainMeterLevel(int inChannel)
     return normalizeddB;
 }
 
-
+float Samax_pluginAudioProcessor::getRmsValue(const int channel) const
+{
+    jassert(channel == 0 || channel == 1);
+    if (channel == 0)
+    {
+        return rmsLevelLeft;
+    }
+    if (channel == 1)
+    {
+        return rmsLevelRight;
+    }
+    return 0.f;    
+}
 
 juce::AudioProcessorValueTreeState::ParameterLayout Samax_pluginAudioProcessor::createParameterLayout()
 {
     std::vector<std::unique_ptr<juce::AudioParameterFloat>> params;
 
-    for (int i = 0; i < kParameter_TotalNumParameters; i++) {
+    for (int i = 0; i < kParameter_TotalNumParameters; i++)
+    {
                
         params.push_back(std::make_unique<juce::AudioParameterFloat>(KAPParameterID[i],
             KAPParameterLabel[i],
             juce::NormalisableRange<float>(0.0f, 1.0f),
-            KAPParameterDefaultValue[i]));
-
-        if ( i==4)
-        {
-            auto lbl = KAPParameterLabel[i];
-            auto val = KAPParameterDefaultValue[i];
-        }
+            KAPParameterDefaultValue[i]));       
     }
     
 
@@ -325,7 +314,6 @@ void Samax_pluginAudioProcessor::initializeDSP()
         mDelay[i] = std::make_unique <KAPADelay>();
         mLfo[i] = std::make_unique <KAPALfo>();
     }
-
 }
 
 //==============================================================================

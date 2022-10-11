@@ -32,6 +32,7 @@ public:
 private:
 	
 	juce::ScopedPointer<KAPVuMeter>mVuMeter;
+	KAPVuMeter mVuMeterL , mVuMeterR;
 	juce::ScopedPointer<KAPParameterSlider>mSlider;
 
 };

@@ -17,9 +17,6 @@ KAPMainPanel::KAPMainPanel(Samax_pluginAudioProcessor* inProcessor)
 {
 	setSize(MAIN_PANEL_WIDTH,
 	    	MAIN_PANEL_HEIGHT);
-	//example of creating uniquepointer 
-	// mMainPanel = std::make_unique <KAPMainPanel>(&audioProcessor);
-
 
 	mTopPanel = std::make_unique<KAPTopPanel>(inProcessor);
 	mTopPanel->setTopLeftPosition(0,0);

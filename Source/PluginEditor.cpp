@@ -8,7 +8,6 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
-
 #include "KAPLookAndFeel.h"
 
 //==============================================================================
@@ -23,7 +22,7 @@ Samax_pluginAudioProcessorEditor::Samax_pluginAudioProcessorEditor (Samax_plugin
     mMainPanel = std::make_unique <KAPMainPanel>(&audioProcessor);
     addAndMakeVisible(mMainPanel.get());
 
-    mLookAndFeel = std::make_unique< KAPLookAndFeel>();//new KAPLookAndFeel();
+    mLookAndFeel = std::make_unique< KAPLookAndFeel>();
     setLookAndFeel(mLookAndFeel.get());
 
     juce::LookAndFeel::setDefaultLookAndFeel(mLookAndFeel.get());
@@ -34,7 +33,7 @@ Samax_pluginAudioProcessorEditor::Samax_pluginAudioProcessorEditor (Samax_plugin
 
 Samax_pluginAudioProcessorEditor::~Samax_pluginAudioProcessorEditor()
 {
-    setLookAndFeel(nullptr);//At Investigation
+    setLookAndFeel(nullptr);
 }
 
 //==============================================================================

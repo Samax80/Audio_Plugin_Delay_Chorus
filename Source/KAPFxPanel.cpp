@@ -17,8 +17,7 @@
 
 kKAPFxPAnel::kKAPFxPAnel(Samax_pluginAudioProcessor* inProcessor)
 	:KAPAPanelBase(inProcessor)
-	//,
-	//mStyle(kKAPFxPAnelStyle_Delay)
+
 	
 {
 	setSize(FX_PANEL_WIDTH,
@@ -26,8 +25,7 @@ kKAPFxPAnel::kKAPFxPAnel(Samax_pluginAudioProcessor* inProcessor)
 	
 	const int currentStyle = (int)mProcessor->getParameter(kParameter_DelayType);
 	setFxPanelStyle((KAPFxPanelStyle)currentStyle);
-	//setFxPanelStyle(kKAPFxPAnelStyle_Delay);
-	//setFxPanelStyle(kKAPFxPAnelStyle_Chorus);
+	
 
 	
 }
@@ -47,8 +45,7 @@ void kKAPFxPAnel::paint(juce::Graphics & g)
 	switch (mStyle)
 	{
 	case(kKAPFxPAnelStyle_Delay):
-	{
-	 // g.drawFittedText("DELAY", 0, 0, getWidth(), getHeight() *0.45, juce::Justification::centred, 1);To be removed
+	{	
 
 	  label = "DELAY";
 
@@ -65,15 +62,10 @@ void kKAPFxPAnel::paint(juce::Graphics & g)
 	    }
 	}
 
-	
-
 	g.setColour(KAPColour_5);
 	g.setFont(font_3);
 
 	g.drawText(label, 0, 0, getWidth(), 80, juce::Justification::centred);
-
-
-
 
 	//paint Labels
 	for (int i = 0; i < mSliders.size(); i++){

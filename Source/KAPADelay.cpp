@@ -47,7 +47,7 @@ void KAPADelay::setSampleRate(double inSampleRate)
 void KAPADelay::reset()
 {
 	mTimeSmoothed = 0.0f;
-	juce::zeromem(mBuffer,( sizeof(float) * maxBufferDelaySize));
+	juce::zeromem(mBuffer,( sizeof(float) * maxBufferDelaySize));	
 }
 
 void KAPADelay::process(float* inAudio,
@@ -60,28 +60,25 @@ void KAPADelay::process(float* inAudio,
 						int inNumsamplesToRender)
 {
 	const float wet = inWetdry;
-	const float dry = 1.0f - wet;
-	
-	
+	const float dry = 1.0f - wet;	
 	
 	float feedbackMapped = 0;
-	//DBG(inType);
-	if(inType ==kKAPDelayType_Delay){
-		feedbackMapped= juce::jmap (inFeedback, 0.0f, 1.0f, 0.0f, 1.2f);
-		//DBG(feedbackMapped);
-	}
 	
+	if(inType ==kKAPDelayType_Delay)
+	{
+		feedbackMapped= juce::jmap (inFeedback, 0.0f, 1.0f, 0.0f, 1.2f);		
+	}
+		
 	for (int i = 0; i < inNumsamplesToRender; i++) {
 	
 		if ((int)inType == kKAPDelayType_Delay) {
-			mTimeSmoothed = mTimeSmoothed - kParameterSmoothingcoeff_Generic * (mTimeSmoothed - inTime);
-			//DBG(mTimeSmoothed);
+			mTimeSmoothed = mTimeSmoothed - kParameterSmoothingcoeff_Generic * (mTimeSmoothed - inTime);					
 		}
-		else {
+		else
+		{
 			const float delayTimemodulation = (0.003 + (0.002*inModulationBuffer[i]));
 			mTimeSmoothed = mTimeSmoothed - kParameterSmoothingcoeff_Generic * (mTimeSmoothed - delayTimemodulation);
 		}
-
 				
 		const float delayTimeInSamples = (mTimeSmoothed * mSampleRate);
 
@@ -91,15 +88,15 @@ void KAPADelay::process(float* inAudio,
 			tanh_clip (inAudio[i] + (mFeedbackSample *feedbackMapped));
 				
  		mFeedbackSample = sample;
-	
+
 		outAudio[i] = (inAudio[i] * dry + sample * wet);
 
 		mDelayIndex = mDelayIndex + 1;
 
-		if (mDelayIndex >= maxBufferDelaySize) {
+		if (mDelayIndex >= maxBufferDelaySize)
+		{
 			mDelayIndex = mDelayIndex - maxBufferDelaySize;
 		}
-
 	}
 
 }

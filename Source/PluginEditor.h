@@ -30,10 +30,7 @@ public:
 private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
-    Samax_pluginAudioProcessor& audioProcessor;
-
-    //juce::ScopedPointer<KAPMainPanel> mMainPanel;
-    //juce::ScopedPointer<KAPLookAndFeel> mLookAndFeel;
+    Samax_pluginAudioProcessor& audioProcessor;   
 
     std::unique_ptr<KAPMainPanel> mMainPanel;
     std::unique_ptr <KAPLookAndFeel> mLookAndFeel;

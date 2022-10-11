@@ -13,7 +13,7 @@
 #include <JuceHeader.h>
 
 #define  kParameterSmoothingcoeff_Generic 1
-//#define  kParameterSmoothingcoeff_Generic 0.04
+
 #define  kParameterSmoothingcoeff_fine  0.002
 
 #define  kMeterSmoothCoeff  0.2f

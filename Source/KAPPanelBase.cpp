@@ -39,7 +39,7 @@ void KAPAPanelBase::mouseExit(const juce::MouseEvent & event)
 
 void KAPAPanelBase::paint(juce::Graphics & g)
 {
-//
+
 	if (isMouseOver(true)) {
 		
 		const Colour hovercolour =
@@ -48,8 +48,6 @@ void KAPAPanelBase::paint(juce::Graphics & g)
 
 		g.setColour(hovercolour); //paint when mouse is over!!!
 		g.fillAll();
-
-
 
 	} 
 	 

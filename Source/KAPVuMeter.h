@@ -19,26 +19,28 @@ class KAPVuMeter
 {
 
 public:
-
-	KAPVuMeter(Samax_pluginAudioProcessor* inprocessor);
-	~KAPVuMeter();
+	
+	KAPVuMeter(std::function<float()>&& valueFunction);	
 
 	void paint(juce::Graphics& g) override;
 	
 	void  timerCallback()override;
+
+	void resized() override;
 
 	void  setParameterID(int inParameterID);
 
 
 private:
 
-	int mParameterID;
+	int mParameterID{ -1 };
 
-	float mCh0Level;
-	float mCh1Level;
+	float mCh0Level{ 0 };
+	float mCh1Level{ 0 };
 
-
-	Samax_pluginAudioProcessor* mProcessor;
+	
+	std::function<float()> valueSupplier;
+	juce::ColourGradient gradient{};
 
 
 

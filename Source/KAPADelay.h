@@ -48,6 +48,6 @@ private:
 	float mFeedbackSample;
 
 	int mDelayIndex;
-	float mTimeSmoothed;
+	float mTimeSmoothed;	
 
 };

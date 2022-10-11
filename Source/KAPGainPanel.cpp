@@ -14,23 +14,30 @@
 
 
 KAPGainPanel::KAPGainPanel(Samax_pluginAudioProcessor* inProcessor)
-	:KAPAPanelBase(inProcessor)
+	:KAPAPanelBase(inProcessor),
+	mVuMeterL([&] {return mProcessor-> getRmsValue(0); }),
+	mVuMeterR([&] {return mProcessor-> getRmsValue(1); })
 {
 
 	setSize(GAIN_PANEL_WIDTH,
 			GAIN_PANEL_HEIGHT);
 	
-	const int meter_width = 64;
-	mVuMeter = new KAPVuMeter(mProcessor);
+	const int meter_width = 64;	
+		
+	auto xPosition = (getWidth() * 0.5) - (meter_width * 0.5);
 	
-	
-	
-	mVuMeter->setBounds((getWidth()*0.5) - (meter_width*0.5),
+	mVuMeterL.setBounds(xPosition,
 					   (getHeight()*0.66) - (meter_width*0.5)-10, 
-						meter_width,
+						meter_width/2,
 						getHeight() * 0.45);
+
+	mVuMeterR.setBounds(55,
+		(getHeight() * 0.66) - (meter_width * 0.5) - 10,
+		meter_width/2,
+		getHeight() * 0.45);
 						
-	addAndMakeVisible(mVuMeter);
+	addAndMakeVisible(mVuMeterL);
+	addAndMakeVisible(mVuMeterR);
 
 						
 }
@@ -63,7 +70,6 @@ void KAPGainPanel::setParameterID(int inparameterID)
 						slider_size,
 		                slider_size);
 
-	addAndMakeVisible(mSlider);
-	mVuMeter->setParameterID(inparameterID);
+	addAndMakeVisible(mSlider);	
 
 }

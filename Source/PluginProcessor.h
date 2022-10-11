@@ -62,6 +62,7 @@ public:
 
     float getInputGainMeterLevel(int inChannel);
 
+  
     juce::AudioProcessorValueTreeState parameters;
 
     KAPPresetManager* getPresetManager()
@@ -70,9 +71,9 @@ public:
         return mPresetManager.get();
     }
 
-  
+    //new implementation for new level meter
 
-  
+    float getRmsValue(const int channel) const;
 private:
     
     juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
@@ -86,7 +87,8 @@ private:
 
     std::unique_ptr<KAPPresetManager>mPresetManager;
   
-
+    //new implementation for new level meter
+    float rmsLevelLeft, rmsLevelRight;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Samax_pluginAudioProcessor)
 };
